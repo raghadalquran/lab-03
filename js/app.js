@@ -1,6 +1,7 @@
 'use strict';
 let arrayTestFirst=[];
 let arrayTestSecond=[];
+let arrOfObj = [];
 $(document).ready(function(){
   function Gallery(image_url,title,description,keyword,horns){
     this.image_url = image_url;
@@ -8,6 +9,7 @@ $(document).ready(function(){
     this.description = description;
     this.keyword = keyword;
     this.horns = horns;
+    arrOfObj.push(this);
   }
   Gallery.prototype.render = function() {
     let $galleryClone = $('#page-2').html();
@@ -47,6 +49,7 @@ $(document).ready(function(){
   pageJson();
 
   $('#button1').on('click',function(){
+    arrOfObj=[];
     $('section').remove();
     $('select option').remove();
     pageJson();
@@ -64,6 +67,7 @@ $(document).ready(function(){
     });
   };
   $('#button2').on('click',function(){
+    arrOfObj=[];
     $('section').remove();
     $('select option').remove();
     page2Json();
@@ -75,3 +79,35 @@ $('select').change(function(){
   $('section').hide();
   $(`.${selected}`).show();
 });
+
+$('.dropbtn').click(function(){
+  $('.dropdown-content').show();
+});
+
+
+$('#Name').click(function(){
+  $('section').remove();
+  sortByKeyAsc(arrOfObj, 'title');
+  arrOfObj.forEach((val) => {
+    val.render();
+    $('.dropdown-content').show();
+  });
+});
+
+
+$('#Number').click(function(){
+  $('section').remove();
+  sortByKeyAsc(arrOfObj,'horns');
+  arrOfObj.forEach((val) => {
+    val.render();
+    $('.dropdown-content').show();
+  });
+});
+//helper function
+function sortByKeyAsc(array, key) {
+  return array.sort(function (a, b) {
+    var x = a[key]; var y = b[key];
+    return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+  });
+}
+
