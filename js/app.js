@@ -1,5 +1,6 @@
 'use strict';
-let arrayToPush=[];
+let arrayTestFirst=[];
+let arrayTestSecond=[];
 $(document).ready(function(){
   function Gallery(image_url,title,description,keyword,horns){
     this.image_url = image_url;
@@ -25,50 +26,52 @@ $(document).ready(function(){
     var rendered = Mustache.render($galleryClone , this);
     $('main').append(rendered);
   };
-  Gallery.prototype.filter = function(){
-    let imageFilter = $('select');
-    if(!(arrayToPush.includes(this.keyword))){
-      arrayToPush.push(this.keyword);
-      imageFilter.append(`<option>${this.keyword}</option>`);}
+  Gallery.prototype.filter = function(array){
+    array.forEach((value) => {
+      let imageFilter = $('select');
+      imageFilter.append(`<option>${value}</option>`);
+    });
   };
   const pageJson = () => {
+    let gallery;
     $.ajax('data/page-1.json', { method: 'GET' ,dataType: 'JSON'}).then(page1 => {
       page1.forEach(function(value){
-        let gallery = new Gallery(value.image_url,value.title,value.description,value.keyword,value.horns);
-        gallery.filter();
+        gallery = new Gallery(value.image_url,value.title,value.description,value.keyword,value.horns);
+        if(!(arrayTestFirst.includes(gallery.keyword))){
+          arrayTestFirst.push(gallery.keyword);}
         gallery.render();
       });
+      gallery.filter(arrayTestFirst);
     });
   };
   pageJson();
 
   $('#button1').on('click',function(){
     $('section').remove();
+    $('select option').remove();
     pageJson();
   });
   const page2Json = () => {
+    let gallery;
     $.ajax('data/page-2.json', { method: 'GET' ,dataType: 'JSON'}).then(page2 => {
       page2.forEach(function(value){
-        let gallery = new Gallery(value.image_url,value.title,value.description,value.keyword,value.horns);
-        gallery.filter();
-        gallery.render2();
+        gallery = new Gallery(value.image_url,value.title,value.description,value.keyword,value.horns);
+        if(!(arrayTestSecond.includes(gallery.keyword))){
+          arrayTestSecond.push(gallery.keyword);}
+        gallery.render();
       });
+      gallery.filter(arrayTestSecond);
     });
   };
   $('#button2').on('click',function(){
     $('section').remove();
+    $('select option').remove();
     page2Json();
   });
 });
 
 $('select').change(function(){
   var selected = $(this).children('option:selected').val();
-  arrayToPush.forEach(function(val){
-    if(selected === val) {
-      $('section').hide();
-      $(`.${val}`).show();
-      console.log(val);
-    }
-
-  });
+  $('section').hide();
+  $(`.${selected}`).show();
 });
