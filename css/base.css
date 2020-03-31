@@ -1,11 +1,15 @@
 
+main{
+    display: flex;
+    flex-wrap: wrap;
+}
 body{
     background-color: bisque;
     width: 100%;
     height: 100%;
 }
 footer{
-    margin-top: 1738px;
+    margin-top: 500px;
     text-align: center;
     clear: both;
 }
@@ -13,7 +17,7 @@ section {
     padding: 20px;
     width: 203px;
     margin-left: 75px;
-    margin-top: 25px;
+    margin-top: 104px;
     float: left;
     flex-wrap: wrap;
     justify-content: center;
